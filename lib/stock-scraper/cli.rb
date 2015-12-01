@@ -1,5 +1,5 @@
-class CLI 
+class CLI
   def initialize
-    puts "khjasdlkhasd"
+    puts "I'm REALLY working"
   end
 end
