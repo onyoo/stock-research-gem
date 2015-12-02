@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
-require_relative '../lib/stock-scraper'
+#require_relative '../lib/stock-scraper'
+require_relative '../config/environment'
 
-CLI.new.call
 
+StockResearch::CLI.new.call
