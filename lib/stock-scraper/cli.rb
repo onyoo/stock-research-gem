@@ -14,8 +14,9 @@ class CLI
     puts ""
     puts "Here are some of the bigger stocks:"
     puts "aapl, goog, nke, tsla"
-    puts "Please enter the tickers you want info on."
-    @tickers = gets.strip.upcase
+    puts "Please enter the tickers you want info on. Seperate with commas ','"
+    @tickers = gets.strip.strip.upcase.split(",").join("+")
+
     puts "Thanks. We'll give you the basic info, but please select any other info you may want?"
     puts "Seperate with commas ','"
     puts "e: Earnings per Share"
