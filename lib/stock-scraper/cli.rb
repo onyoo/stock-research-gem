@@ -1,5 +1,5 @@
 class CLI
-  attr_accessor :tickers, :tags, :hash
+  attr_accessor :tickers, :tags, :final_array
 
   STOCKS = ["AAPL", "GOOG", "MSFT", "NFLX", "TSLA", "IBM", "AMZN", "EBAY", "SBUX", "FB"]
   TAGS_ENGLISH = []
@@ -8,7 +8,7 @@ class CLI
   def initialize 
     @tags = ["n","a","p","o","t8","m","w","v","j1"]
     @origional_length = @tags.length
-    @hash = {}
+    @final_array = []
   end
 
   def call
@@ -44,34 +44,27 @@ values = TAG_VALUES
       open(url) do |f| 
         f.each_line do |l| 
           CSV.parse(l) do |row|
-            @hash["#{TAGS_ENGLISH[i]}"] = row[i]
-            binding.pry
+            @final_array << ["#{TAGS_ENGLISH[i]}", row[i]]
             i+=1
           end
         end
       end
-      z=4
     end
   end
 
   def print_stocks
- #   open(url) do |f| 
- #     f.each_line do |l| 
- #       CSV.parse(l) do |row|
- #         puts "\n" 
- #         puts "#{row[0]}".center(61)
- #         puts " " + "-" * 65
+    
+         puts "\n" 
+         puts "#{final_array[0][0]}:     #{final_array[0][1]}".center(61)
+         puts " " + "-" * 65
 
+         #########   Must be some way to loop this ####
+         puts " #{final_array[2][0]}:     $#{final_array[2][1]}       #{final_array[3][0]}:     $#{final_array[3][1]}" 
+         puts " #{final_array[4][0]}:     $#{final_array[4][1]}       #{final_array[5][0]}:     $#{final_array[5][1]}" 
+         puts " #{final_array[6][0]}:     $#{final_array[6][1]}       #{final_array[7][0]}:     $#{final_array[7][1]}" 
+         puts " #{final_array[8][0]}:     $#{final_array[8][1]}       #{final_array[9][0]}:     $#{final_array[9][1]}" 
+         puts " #{final_array[10][0]}:     $#{final_array[10][1]}       #{final_array[11][0]}:     $#{final_array[11][1]}" 
 
- #         puts " Asking price:     $#{row[1]}       Days Range:      $#{row[5]}" 
- #         puts " Previous close:   $#{row[2]}       52 Week Range:   $#{row[6]}"
- #         puts " Open:             $#{row[3]}       Volume:          #{row[7]}"
- #         puts " 1y Target price:  $#{row[4]}       Market Cap:      #{row[8]}"
- #         puts 
- #       end
- #     end
-      puts "#{@hash}"
- #   end
   end
 
   def tag_translate
