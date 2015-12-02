@@ -1,6 +1,6 @@
-#lib = File.expand_path('../lib', __FILE__)
-#$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-#require 'now_playing/version'
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require './lib/stock-research/version'
 
 Gem::Specification.new do |spec|
   spec.authors       = ["Frank Nowinski & Roberto Mesado"]
@@ -11,10 +11,10 @@ Gem::Specification.new do |spec|
 
   spec.files         = `git ls-files`.split($\)
   spec.executables   = ["research-stocks"]
-  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+#  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.name          = "stock-scraper-cli-gem"
-  spec.require_paths = ["lib", "lib/now_playing"]
-  spec.version       = NowPlaying::VERSION
+  spec.require_paths = ["lib", "lib/stock-research"]
+  spec.version       = StockResearch::VERSION
   spec.license       = "MIT"
 
   spec.add_development_dependency "bundler", "~> 1.10"
@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "nokogiri"
   spec.add_development_dependency "pry"
-  spec.add_development_dependency "vcr"
-  spec.add_development_dependency "webmock"
+  spec.add_development_dependency "csv"
+  spec.add_development_dependency "open-uri"
+
 end

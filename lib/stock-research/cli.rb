@@ -1,9 +1,9 @@
-module Stocks
+module StockResearch
 end
-class Stocks::CLI
+class StockResearch::CLI
   attr_accessor :tickers, :tags, :final_array, :tags_english
 
-  STOCKS = ["AAPL", "GOOG", "MSFT", "NFLX", "TSLA", "IBM", "AMZN", "EBAY", "SBUX", "FB"]
+  START_STOCKS = ["AAPL", "GOOG", "MSFT", "NFLX", "TSLA", "IBM", "AMZN", "EBAY", "SBUX", "FB"]
   
 
   def initialize 
@@ -22,7 +22,7 @@ class Stocks::CLI
     puts " Most Popular Stocks  |  Trending Stocks ".center(47)
     puts " " + "-" * 45
     puts "\n"
-    STOCKS.each_with_index{ |stock, i| puts " #{i+1}. #{stock}" }
+    START_STOCKS.each_with_index{ |stock, i| puts " #{i+1}. #{stock}" }
   end
 
   def start
@@ -43,7 +43,7 @@ class Stocks::CLI
     puts "Would you like to start again?\n"
     input = gets.strip.upcase
     if input == "Y" || input == "YES"
-      CLI.new.call
+      StockResearch::CLI.new.call
     end
   end
 
