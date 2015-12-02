@@ -8,7 +8,6 @@ class CLI
   def initialize 
     @tags = ["n","a","p","o","t8","m","w","v","j1"]
     @length = @tags.length
-    @final_array = []
   end
 
   def call
@@ -30,35 +29,51 @@ class CLI
     get_tags
     tag_translate
     create_array
+    populate_array
     print_stocks
   end
-
-keys = TAGS_ENGLISH
-values = TAG_VALUES
 
   def create_array
     url = "http://finance.yahoo.com/d/quotes.csv?s=#{tickers}&f=#{tags.join}"
     info = open(url)
-    i=0
-    TAGS_ENGLISH.each do |tag_name|
-      open(url) do |f| 
-        f.each_line do |l| 
-          CSV.parse(l) do |row|
-            @final_array << ["#{TAGS_ENGLISH[i]}", row[i]]
-            i+=1
-          end
-        end
+    i=1
+    @raw_array = []
+    open(url) do |f| 
+      f.each_line do |l|
+        @raw_array << l
+##### refractor ############
+#          CSV.parse(l) do |row|
+#            @final_array << ["#{TAGS_ENGLISH[i]}", row[i]]
+#            i+=1
+#            z=3
+#          end
       end
     end
   end
 
-  def print_stocks
+  def populate_array
+    counter = 0
+    @final_array = Array.new(@raw_array.count){Array.new(0)}
+
+    TAGS_ENGLISH.each do |tag|          ## it starts a loop for every tag
+      @raw_array.each_with_index do |co,i|  ## looks at every company in raw array with it's index
+
+        CSV.parse(co) do |row|        ## parses each company by row
+          x = "#{TAGS_ENGLISH[counter]}", row[counter]  ##
+          @final_array[i] << x
+          binding.pry
+          counter += 1
+        end
+      end
     
+    end
+  end
+
+  def print_stocks
    puts "\n" 
    puts "#{final_array[0][0]}:     #{final_array[0][1]}".center(61)
    puts " " + "-" * 65
    i = 1
-   
    while i < TAGS_ENGLISH.count
      puts " #{final_array[i][0]}:     $#{final_array[i][1]}"
      i += 1
@@ -102,7 +117,7 @@ values = TAG_VALUES
 
   def get_tickers 
     puts "\nEnter the stock tickers you want more infomation on." 
-    puts "Separate tickers with commas ',' or a space\n\n"
+    puts "Separate tickers with commas ',' or a space.\n\n"
 #    @tickers = gets.strip.scan(/\S[a-zA-Z]+/).join("+").upcase # Between {2,4}
     @tickers = gets.strip.strip.upcase.split(",").join("+")
   end
