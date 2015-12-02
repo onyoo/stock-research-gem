@@ -1,5 +1,5 @@
 class CLI
-  attr_accessor :tickers, :tags
+  attr_accessor :tickers, :tags, :hash
 
   STOCKS = ["AAPL", "GOOG", "MSFT", "NFLX", "TSLA", "IBM", "AMZN", "EBAY", "SBUX", "FB"]
   TAGS_ENGLISH = []
@@ -8,6 +8,7 @@ class CLI
   def initialize 
     @tags = ["n","a","p","o","t8","m","w","v","j1"]
     @origional_length = @tags.length
+    @hash = {}
   end
 
   def call
@@ -28,6 +29,7 @@ class CLI
     get_tickers
     get_tags
     tag_translate
+    create_hash
     print_stocks
   end
 
@@ -35,36 +37,64 @@ keys = TAGS_ENGLISH
 values = TAG_VALUES
 
   def create_hash
-
-  end
-
-  def print_stocks
     url = "http://finance.yahoo.com/d/quotes.csv?s=#{tickers}&f=#{tags.join}"
     info = open(url)
-
-    open(url) do |f| 
-      f.each_line do |l| 
-        CSV.parse(l) do |row|
-          puts "\n" 
-          puts "#{row[0]}".center(61)
-          puts " " + "-" * 65
-
-
-          puts " Asking price:     $#{row[1]}       Days Range:      $#{row[5]}" 
-          puts " Previous close:   $#{row[2]}       52 Week Range:   $#{row[6]}"
-          puts " Open:             $#{row[3]}       Volume:          #{row[7]}"
-          puts " 1y Target price:  $#{row[4]}       Market Cap:      #{row[8]}"
-          puts 
+    i=0
+    TAGS_ENGLISH.each do |tag_name|
+      open(url) do |f| 
+        f.each_line do |l| 
+          CSV.parse(l) do |row|
+            @hash["#{TAGS_ENGLISH[i]}"] = row[i]
+            binding.pry
+            i+=1
+          end
         end
       end
-      binding.pry
       z=4
     end
   end
 
+  def print_stocks
+ #   open(url) do |f| 
+ #     f.each_line do |l| 
+ #       CSV.parse(l) do |row|
+ #         puts "\n" 
+ #         puts "#{row[0]}".center(61)
+ #         puts " " + "-" * 65
+
+
+ #         puts " Asking price:     $#{row[1]}       Days Range:      $#{row[5]}" 
+ #         puts " Previous close:   $#{row[2]}       52 Week Range:   $#{row[6]}"
+ #         puts " Open:             $#{row[3]}       Volume:          #{row[7]}"
+ #         puts " 1y Target price:  $#{row[4]}       Market Cap:      #{row[8]}"
+ #         puts 
+ #       end
+ #     end
+      puts "#{@hash}"
+ #   end
+  end
+
   def tag_translate
-    tags[@origional_length..-1].each do |tag|
+    tags.each do |tag|
       case tag
+      when "n"
+        TAGS_ENGLISH << "Name"
+      when"a"
+        TAGS_ENGLISH << "Asking price"
+      when"p"
+        TAGS_ENGLISH << "Previous close"
+      when"o"
+        TAGS_ENGLISH << "Open"
+      when"t8"
+        TAGS_ENGLISH << "1y Target price"
+      when"m"
+        TAGS_ENGLISH << "Days Range"
+      when"w"
+        TAGS_ENGLISH << "52 Week Range"
+      when"v"
+        TAGS_ENGLISH << "Volume"
+      when"j1"
+        TAGS_ENGLISH << "Market Cap"
       when "h0"
         TAGS_ENGLISH << "Earnings per Share"
       when "d"
