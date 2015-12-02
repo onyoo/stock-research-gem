@@ -1,4 +1,6 @@
-class CLI
+module Stocks
+end
+class Stocks::CLI
   attr_accessor :tickers, :tags, :final_array, :tags_english
 
   STOCKS = ["AAPL", "GOOG", "MSFT", "NFLX", "TSLA", "IBM", "AMZN", "EBAY", "SBUX", "FB"]
