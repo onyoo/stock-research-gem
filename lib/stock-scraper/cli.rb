@@ -1,12 +1,13 @@
 class CLI
-  attr_accessor :tickers, :tags, :final_array
+  attr_accessor :tickers, :tags, :final_array, :tags_english
 
   STOCKS = ["AAPL", "GOOG", "MSFT", "NFLX", "TSLA", "IBM", "AMZN", "EBAY", "SBUX", "FB"]
-  TAGS_ENGLISH = []
+  
 
   def initialize 
-    @tags = ["n","a","p","o","t8","m","w","v","j1"]
+    @tags = ["N","A","P","O","T8","M","W","V","J1"]
     @length = @tags.length
+    @tags_english = []
   end
 
   def call
@@ -25,11 +26,23 @@ class CLI
   def start
     list
     get_tickers
-    get_tags
-    tag_translate
-    create_array
-    populate_array
-    print_stocks
+    if !tickers.include?("EXIT")
+      if !get_tags.include?("EXIT")
+        tag_translate
+        create_array
+        populate_array
+        print_stocks
+      end
+    end
+    try_again
+  end
+
+  def try_again
+    puts "Would you like to start again?\n"
+    input = gets.strip.upcase
+    if input == "Y" || input == "YES"
+      CLI.new.call
+    end
   end
 
   def create_array
@@ -40,12 +53,6 @@ class CLI
     open(url) do |f| 
       f.each_line do |l|
         @raw_array << l
-##### refractor ############
-#          CSV.parse(l) do |row|
-#            @final_array << ["#{TAGS_ENGLISH[i]}", row[i]]
-#            i+=1
-#            z=3
-#          end
       end
     end
   end
@@ -54,10 +61,10 @@ class CLI
     counter = 0
     @final_array = Array.new(@raw_array.count){Array.new(0)}
 
-    TAGS_ENGLISH.each do |tag|          ## it starts a loop for every tag
-      @raw_array.each_with_index do |co,i|  ## looks at every company in raw array with it's index
-        CSV.parse(co) do |row|        ## parses each company by row
-          x = "#{TAGS_ENGLISH[counter]}", row[counter]  ##
+    tags_english.each do |tag|
+      @raw_array.each_with_index do |co,i|
+        CSV.parse(co) do |row|
+          x = "#{tags_english[counter]}", row[counter]
           @final_array[i] << x
         end
       end
@@ -72,8 +79,12 @@ class CLI
       puts "#{final_array[comp][0].join(": ")}".center(61)
       puts " " + "-" * 65
       i = 1
-      while i < (TAGS_ENGLISH.count)
-        puts " #{final_array[comp][0+i].join(": $")}"
+      while i < (tags_english.count)
+        if final_array[comp][0+i][1].include?("%") || !final_array[comp][0+i][1].include?(".") 
+          puts " #{final_array[comp][0+i].join(": ")}"
+        else
+          puts " #{final_array[comp][0+i].join(": $")}"
+        end
         i += 1
       end
       comp += 1
@@ -83,34 +94,34 @@ class CLI
   def tag_translate
     tags.each do |tag|
       case tag
-      when "n"
-        TAGS_ENGLISH << "Name"
-      when"a"
-        TAGS_ENGLISH << "Asking price"
-      when"p"
-        TAGS_ENGLISH << "Previous close"
-      when"o"
-        TAGS_ENGLISH << "Open"
-      when"t8"
-        TAGS_ENGLISH << "1y Target price"
-      when"m"
-        TAGS_ENGLISH << "Days Range"
-      when"w"
-        TAGS_ENGLISH << "52 Week Range"
-      when"v"
-        TAGS_ENGLISH << "Volume"
-      when"j1"
-        TAGS_ENGLISH << "Market Cap"
-      when "h0"
-        TAGS_ENGLISH << "Earnings per Share"
-      when "d"
-        TAGS_ENGLISH << "Dividend per Share"
-      when "y"
-        TAGS_ENGLISH << "Dividend Yield"
-      when "r2"
-        TAGS_ENGLISH << "P/E Ratio (Realtime)"
-      when "m6"
-        TAGS_ENGLISH << "Percent Change From 200 Day Moving Average"
+      when "N"
+        tags_english << "Name"
+      when"A"
+        tags_english << "Asking price"
+      when"P"
+        tags_english << "Previous close"
+      when"O"
+        tags_english << "Open"
+      when"T8"
+        tags_english << "1y Target price"
+      when"M"
+        tags_english << "Days Range"
+      when"W"
+        tags_english << "52 Week Range"
+      when"V"
+        tags_english << "Volume"
+      when"J1"
+        tags_english << "Market Cap"
+      when "H0"
+        tags_english << "Earnings per Share"
+      when "D"
+        tags_english << "Dividend per Share"
+      when "Y"
+        tags_english << "Dividend Yield"
+      when "R2"
+        tags_english << "P/E Ratio (Realtime)"
+      when "M6"
+        tags_english << "Percent Change From 200 Day Moving Average"
       end
     end
   end
@@ -132,6 +143,6 @@ class CLI
     puts " r2 | P/E Ratio (Realtime)"
     puts " m6 | Percent Change From 200 Day Moving Average\n\n"
     
-    (tags << gets.strip.split(",")).flatten!
+    (@tags << gets.strip.upcase.split(",")).flatten!
   end
 end
