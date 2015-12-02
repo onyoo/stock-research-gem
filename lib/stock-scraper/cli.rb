@@ -7,7 +7,7 @@ class CLI
 
   def initialize 
     @tags = ["n","a","p","o","t8","m","w","v","j1"]
-    @origional_length = @tags.length
+    @length = @tags.length
     @final_array = []
   end
 
@@ -29,14 +29,14 @@ class CLI
     get_tickers
     get_tags
     tag_translate
-    create_hash
+    create_array
     print_stocks
   end
 
 keys = TAGS_ENGLISH
 values = TAG_VALUES
 
-  def create_hash
+  def create_array
     url = "http://finance.yahoo.com/d/quotes.csv?s=#{tickers}&f=#{tags.join}"
     info = open(url)
     i=0
@@ -54,17 +54,15 @@ values = TAG_VALUES
 
   def print_stocks
     
-         puts "\n" 
-         puts "#{final_array[0][0]}:     #{final_array[0][1]}".center(61)
-         puts " " + "-" * 65
-
-         #########   Must be some way to loop this ####
-         puts " #{final_array[2][0]}:     $#{final_array[2][1]}       #{final_array[3][0]}:     $#{final_array[3][1]}" 
-         puts " #{final_array[4][0]}:     $#{final_array[4][1]}       #{final_array[5][0]}:     $#{final_array[5][1]}" 
-         puts " #{final_array[6][0]}:     $#{final_array[6][1]}       #{final_array[7][0]}:     $#{final_array[7][1]}" 
-         puts " #{final_array[8][0]}:     $#{final_array[8][1]}       #{final_array[9][0]}:     $#{final_array[9][1]}" 
-         puts " #{final_array[10][0]}:     $#{final_array[10][1]}       #{final_array[11][0]}:     $#{final_array[11][1]}" 
-
+   puts "\n" 
+   puts "#{final_array[0][0]}:     #{final_array[0][1]}".center(61)
+   puts " " + "-" * 65
+   i = 1
+   
+   while i < TAGS_ENGLISH.count
+     puts " #{final_array[i][0]}:     $#{final_array[i][1]}"
+     i += 1
+   end
   end
 
   def tag_translate
@@ -105,7 +103,8 @@ values = TAG_VALUES
   def get_tickers 
     puts "\nEnter the stock tickers you want more infomation on." 
     puts "Separate tickers with commas ',' or a space\n\n"
-    @tickers = gets.strip.scan(/\S[a-zA-Z]+/).join("+").upcase # Between {2,4}
+#    @tickers = gets.strip.scan(/\S[a-zA-Z]+/).join("+").upcase # Between {2,4}
+    @tickers = gets.strip.strip.upcase.split(",").join("+")
   end
 
   def get_tags
