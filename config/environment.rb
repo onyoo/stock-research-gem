@@ -3,6 +3,7 @@ require 'open-uri'
 require 'pry'
 require 'nokogiri'
 require 'csv'
+require 'rspec'
 
 require_relative "../lib/stock-research/cli"
 require_relative "../lib/stock-research/version"

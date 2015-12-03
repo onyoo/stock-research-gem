@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.files         = `git ls-files`.split($\)
   spec.executables   = ["research-stocks"]
-#  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.name          = "stock-scraper-cli-gem"
   spec.require_paths = ["lib", "lib/stock-research"]
   spec.version       = StockResearch::VERSION
