@@ -8,7 +8,6 @@ class StockResearch::CLI
 
   def initialize 
     @tags = ["N","A","P","O","T8","M","W","V","J1"]
-    @length = @tags.length
     @tags_english = []
   end
 
