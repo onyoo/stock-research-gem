@@ -9,10 +9,10 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Downloads stock profiles.}
   spec.homepage      = "https://learn.co"
 
-  spec.files         = `git ls-files`.split($\)
-  spec.executables   = ["research-stocks"]
+  spec.files         = ["lib/stock-research/cli"], ["lib/stock-research/get_quote"], ["lib/stock-research/version"], ["lib/stock-research/stock-research"]
+  spec.executables   = ["stock-research"]
 #  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
-  spec.name          = "stock-scraper-cli-gem"
+  spec.name          = "stock-research-cli-gem"
   spec.require_paths = ["lib", "lib/stock-research"]
   spec.version       = StockResearch::VERSION
   spec.license       = "MIT"

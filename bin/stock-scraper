@@ -4,4 +4,4 @@
 require_relative '../config/environment'
 
 
-StockResearch::CLI.new.call
+StockResearch::CLI.new.start

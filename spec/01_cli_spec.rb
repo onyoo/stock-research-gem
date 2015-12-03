@@ -1,4 +1,4 @@
-require '../lib/stock-research/cli'
+require_relative '../lib/stock-research/cli'
 require 'pry'
 
 
@@ -24,12 +24,13 @@ end
 
 
 describe '#get_tickers' do
-  it 'gets tickers and assigns them to @tickers' do
-    game = StockResearch::CLI.new.get_tickers
-    allow($stdout).to receive(:puts)
 
-    expect(game).to receive(:gets).and_return("aapl")
-    expect(game.tickers([])).to eq("AAPL")
+  it 'gets tickers and assigns them to @tickers' do
+    game = StockResearch::CLI.new
+    allow($stdin).to receive(:puts)
+
+    expect(game.tickers).to receive(:gets).and_return("aapl")
+    expect(game.tickers).to eq("AAPL")
   end
 end
 
